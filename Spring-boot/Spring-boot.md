@@ -75,4 +75,4 @@ List<HttpMessageConverter<?>> converters 是什么？
 converter.setObjectMapper(new JacksonObjectMapper());
 将我们自己的方法或者时字典,给这个工具,或者说是翻译官,让他来使用,最后
 再将翻译官添加到集合0号位置上,这样他能第一个开始翻译;这样就可以完美避开spring1的默认规则
-总的来说
+总的来说,消息转化器的底层就是根据spring这个大经理,也就是大框架,蹭上这个框架的车,到达目的地
