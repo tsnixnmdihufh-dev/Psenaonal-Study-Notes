@@ -76,3 +76,24 @@ converter.setObjectMapper(new JacksonObjectMapper());
 将我们自己的方法或者时字典,给这个工具,或者说是翻译官,让他来使用,最后
 再将翻译官添加到集合0号位置上,这样他能第一个开始翻译;这样就可以完美避开spring1的默认规则
 总的来说,消息转化器的底层就是根据spring这个大经理,也就是大框架,蹭上这个框架的车,到达目的地
+就比方说经理,翻译官和字典这三者的关系,spring大经理每天都会找人对接事务,比如说找英文翻译官排第三号,他不认识人,他会先问第0号,你是应用于翻译官吗?不是就继续直到第三号
+也就是责任链模式（Chain of Responsibility）结合了快速失败机制（Short-circuiting）。
+就好比这样
+```java
+// Spring 大经理手里拿着那个 List 名单 (converters)
+for (HttpMessageConverter converter : converters) {
+    
+    // 经理发问：“你能处理当前的数据类型（Java对象转JSON）吗？”
+    // 在源码里，经理调用的这个方法叫 canWrite() 或者 canRead()
+    if (converter.canWrite(数据类型, 目标格式)) {
+        
+        // 如果翻译官回答：“我能！交给我！”
+        // 经理就让他立刻干活，调用 write() 方法
+        converter.write(数据, ...);
+        
+        // 【最关键的一步】直接 return 结束！
+        // 经理打卡下班了，后面的翻译官他看都不看一眼！
+        return; 
+    }
+}
+```
